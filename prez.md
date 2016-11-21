@@ -116,7 +116,7 @@ Advantages to push:
   * Simple JSON API (Roll your own?)
 
 <br>
-CHART INCOMING:
+A possible setup:
 <br>
 ▛▀▀▀▀▀▀▀▀▀▀▀▀▜           ▛▀▀▀▀▀▀▀▀▀▀▜          ▛▀▀▀▀▀▀▀▀▀▀▜
 ▌  DASHBOARD ▐  ==GET==> ▌          ▐ ==GET==> ▌  AGENTS  ▐
@@ -127,3 +127,50 @@ CHART INCOMING:
 ▙▄▄▄▄▄▄▄▄▄▄▄▄▟           ▙▄▄▄▄▄▄▄▄▄▄▟          ▙▄▄▄▄▄▄▄▄▄▄▟
 
 -------------------------------------------------
+-> # Exporters <-
+
+* They're really simple to write.
+<br>
+* Great support for a lot of programming languages:
+  * Go
+  * Python
+  * Node
+  * Ruby
+  * etc
+<br>
+* Simple protocol(Protobuf)
+<br>
+    from prometheus_client import start_http_server, Summary
+    import random
+    import time
+    # Create a metric to track time spent and requests made.
+    REQUEST_TIME = Summary('request_processing_seconds', 'Time spent processing request')
+    # Decorate function with metric.
+    @REQUEST_TIME.time()
+    def process_request(t):
+        """A dummy function that takes some time."""
+        time.sleep(t)r
+    if __name__ == '__main__':
+        # Start up the server to expose the metrics.
+        start_http_server(8000)
+        # Generate some requests.
+        while True:
+            process_request(random.random())
+
+-------------------------------------------------
+
+-> # Operating your Prometheus setup <-
+Simple setup:
+    `mkdir tmp
+    `curl -L https://github.com/prometheus/prometheus/releases/download/v1.3.1/prometheus-1.3.1.darwin-amd64.tar.gz |tar --strip-components=1 -xz -C tmp
+
+<br>
+I heard you are into containers, so why not?
+<br>
+
+ ` docker run --restart=always -p 9090:9090 -v /tmp/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+`
+
+# What about the exporters?
+* As already mentioned most of them are 0config, so
+ `mkdir /opt/node_exporter; curl -Lks https://github.com/prometheus/node_exporter/releases/download/0.12.0/node_exporter-0.12.0.linux-amd64.tar.gz | tar --strip-components=1 -xz -C /opt/node_exporter; /opt/node_exporter/node_exporter&`
