@@ -221,7 +221,7 @@ Multi-dimensional Matrices anyone?
 
 
 -------------------------------------------------
--> # Data collection \!= Monitoring <-
+-> # Data collection != Monitoring <-
 # Querying data from Prometheus:
 You are collecting all your metrics with Prometheus like crazy. But hey, you will want to run queries on it right?
 This is no Graphite after all. Say hello to *PromQL*.
